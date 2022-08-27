@@ -39,7 +39,7 @@ export default class MyDocument extends Document {
       <Html>
         <Head>
           <link
-            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css'"
+            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
             rel="stylesheet"
             type="text/css"
           />
