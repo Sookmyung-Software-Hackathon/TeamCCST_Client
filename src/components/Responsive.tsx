@@ -1,6 +1,5 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
-import { deviceQuery } from 'src/constants/DeviceInfo';
+import useMedia from 'src/hooks/useMedia';
 
 interface ScreenProps {
   children: ReactElement;
@@ -14,42 +13,28 @@ interface ScreenMap {
   [key: string]: boolean;
 }
 
-export function useMedia() {
-  const isMobile = useMediaQuery({
-    query: deviceQuery.mobile,
-  });
-
-  const isDesktop = useMediaQuery({
-    query: deviceQuery.desktop,
-  });
-
-  return { isMobile, isDesktop };
-}
-
-function Responsive(props: ScreenProps) {
+function Screen(props: ScreenProps) {
   const { children, ...screens } = props;
   const { isMobile, isDesktop } = useMedia();
-  const [renderFlag, setRenderFlag] = useState(false);
 
+  const [renderFlag, setRenderFlag] = useState(false);
   useEffect(() => {
-    const responsiveMap: ScreenMap = {
+    const screenMap: ScreenMap = {
       mobile: isMobile,
       desktop: isDesktop,
     };
-
-    let shouldRender = false;
-
+    let activated = false;
     Object.keys(screens).forEach((screen) => {
-      if (responsiveMap[screen]) {
+      if (screenMap[screen]) {
         setRenderFlag(true);
-        shouldRender = true;
+        activated = true;
       }
     });
 
-    if (!shouldRender) setRenderFlag(false);
+    if (!activated) setRenderFlag(false);
   }, [isMobile, isDesktop, screens]);
 
   return renderFlag ? children : null;
 }
 
-export default Responsive;
+export default Screen;
