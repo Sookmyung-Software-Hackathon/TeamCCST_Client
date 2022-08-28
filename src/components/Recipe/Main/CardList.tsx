@@ -6,6 +6,7 @@ export interface recipeListEl {
   imageURL: string;
   title: string;
   writerInfo: string;
+  id: number;
 }
 interface recipeListProps {
   recipeList: recipeListEl[];

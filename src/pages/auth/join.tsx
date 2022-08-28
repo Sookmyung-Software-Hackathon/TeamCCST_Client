@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Button from 'src/components/common/Button';
+import ProgressBar from 'src/components/common/ProgressBar';
 import UnderBox from 'src/components/common/UnderBox';
 import JoinInputDiv from 'src/components/Join/JoinInputDiv';
 import SelectNickname from 'src/components/Join/SelectNickname';
@@ -13,9 +14,11 @@ function Join() {
   const [isFirst, setIsFirst] = useState(true);
   const [joinInfo, setJoinInfo] = useState({ name: '', password: '', year: '', nickname: '님' });
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignup = async () => {
     try {
+      setIsLoading(true);
       const { data } = await client.post('/auth/signup', {
         ...joinInfo,
         year: parseInt(joinInfo.year),
@@ -25,6 +28,8 @@ function Join() {
       router.push('/recipe');
     } catch (err) {
       throw Error('error!');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -63,6 +68,7 @@ function Join() {
           </Button>
         </>
       </UnderBox>
+      {isLoading && <ProgressBar />}
     </Styled.Root>
   );
 }

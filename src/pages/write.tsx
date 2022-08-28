@@ -4,6 +4,7 @@ import TitleLogo from 'public/titleLogo.svg';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import Button from 'src/components/common/Button';
 import Input from 'src/components/common/Input';
+import ProgressBar from 'src/components/common/ProgressBar';
 import { client } from 'src/cores/api';
 import { theme } from 'src/styles/theme';
 import { InputProps } from 'src/types/inputType';
@@ -28,6 +29,7 @@ function Write() {
   });
 
   const [imagePreview, setImagePreview] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = <T extends keyof typeof formInputs>(
     type: T,
@@ -102,13 +104,20 @@ function Write() {
     });
 
     if (accessToken !== null) {
-      await client.post('/recipe', formData, {
-        headers: {
-          authorization: `Bearer ${accessToken}`,
-          'content-type': 'multipart/form-data',
-        },
-      });
-      router.push('/recipe');
+      try {
+        setIsLoading(true);
+        await client.post('/recipe', formData, {
+          headers: {
+            authorization: `Bearer ${accessToken}`,
+            'content-type': 'multipart/form-data',
+          },
+        });
+        router.push('/recipe');
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -146,6 +155,7 @@ function Write() {
           요리 소개하기
         </Button>
       </Styled.Form>
+      {isLoading && <ProgressBar />}
     </Styled.Container>
   );
 }

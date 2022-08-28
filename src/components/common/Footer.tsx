@@ -27,7 +27,7 @@ function Footer() {
   return (
     <Styled.Root>
       <Logo />
-      <span onClick={handleClick}>{isLogin ? '로그아웃' : '로그인'}</span>
+      <Styled.Span onClick={handleClick}>{isLogin ? '로그아웃' : '로그인'}</Styled.Span>
     </Styled.Root>
   );
 }
@@ -42,11 +42,10 @@ const Styled = {
     padding: 2.6rem 0;
     background-color: ${theme.colors.footerGrey};
     gap: 1.3rem;
-
-    & > span {
-      font-size: 1.2rem;
-      text-decoration: underline;
-      color: #c9c9c9;
-    }
+  `,
+  Span: styled.span`
+    font-size: 1.2rem;
+    text-decoration: underline;
+    color: #c9c9c9;
   `,
 };

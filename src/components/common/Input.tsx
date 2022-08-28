@@ -36,6 +36,8 @@ const Styled = {
     border-radius: 8px;
     border: 1px solid #fd892b;
     outline: 0;
+    font-size: 15px;
+    line-height: 18px;
 
     &::placeholder {
       font-size: 15px;
@@ -54,6 +56,8 @@ const Styled = {
     border: 1px solid #fd892b;
     resize: none;
     outline: 0;
+    font-size: 15px;
+    line-height: 18px;
 
     &::placeholder {
       font-size: 15px;

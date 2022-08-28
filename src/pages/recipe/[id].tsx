@@ -1,26 +1,59 @@
+import { useRouter } from 'next/router';
 import DropUpIC from 'public/ic_arrow_up.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import ProgressBar from 'src/components/common/ProgressBar';
 import UnderBox from 'src/components/common/UnderBox';
 import DetailInfo from 'src/components/Recipe/Detail/DetailInfo';
-import { DummyDetail } from 'src/constants/dummy';
+import { client } from 'src/cores/api';
 import { ArrowDownAnimation, ArrowUpAnimation } from 'src/styles/animation';
 import styled from 'styled-components';
 
+export interface recipeProps {
+  imageURL: string;
+  writer: string;
+  food: string;
+  ingredient: string;
+  content: string;
+}
+
 function RecipeDetail() {
   const [isOpen, setIsOpen] = useState(false);
+  const [recipe, setRecipe] = useState<recipeProps>();
+  const [isLoading, setIsLoading] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
+  const router = useRouter();
+
+  const getDetailRecipe = async (id: string) => {
+    try {
+      setIsLoading(true);
+      const { data } = await client.get(`/recipe/${id}`);
+      setRecipe(data.data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const detailId = router.query.id;
+    if (typeof detailId === 'string') {
+      getDetailRecipe(detailId);
+    }
+  }, [router.query.id]);
 
   return (
     <Styled.Root>
-      <Styled.ImgWrapper url={DummyDetail.image} />
+      <Styled.ImgWrapper url={recipe?.imageURL || ''} />
       <UnderBox padding={'0 2rem 3rem 2rem'}>
         <>
           <Styled.IconWrapper>
             {isOpen ? <Styled.DownIcon onClick={toggle} /> : <Styled.UpIcon onClick={toggle} />}
           </Styled.IconWrapper>
-          <DetailInfo isOpen={isOpen} />
+          <DetailInfo isOpen={isOpen} recipe={recipe} />
         </>
       </UnderBox>
+      {isLoading && <ProgressBar />}
     </Styled.Root>
   );
 }

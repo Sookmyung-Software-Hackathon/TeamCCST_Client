@@ -1,32 +1,30 @@
-import { DummyDetail } from 'src/constants/dummy';
+import { recipeProps } from 'src/pages/recipe/[id]';
 import { theme } from 'src/styles/theme';
 import styled from 'styled-components';
 
 interface DetailInfoProps {
-    isOpen: boolean;
+  isOpen: boolean;
+  recipe: recipeProps | undefined;
 }
 
-function DetailInfo({isOpen}:DetailInfoProps) {
+function DetailInfo({ isOpen, recipe }: DetailInfoProps) {
   return (
     <Styled.Root>
       <Styled.Header>
-        <p className="subTitle">
-          {DummyDetail.name}
-          <span>{DummyDetail.nickname}</span>
-        </p>
+        <p className="subTitle">{recipe?.writer}</p>
         <p className="title">
-          <span>{DummyDetail.food}</span>
+          <span>{recipe?.food}</span>
           요리법을 소개할게요
         </p>
       </Styled.Header>
       <Styled.Main>
         <Styled.Content isOpen={isOpen}>
           <p>재료 소개</p>
-          <div>{DummyDetail.ingredients}</div>
+          <div>{recipe?.ingredient}</div>
         </Styled.Content>
         <Styled.Content isOpen={isOpen}>
           <p>레시피 소개</p>
-          <div className="recipe">{DummyDetail.recipe}</div>
+          <div className="recipe">{recipe?.content}</div>
         </Styled.Content>
       </Styled.Main>
     </Styled.Root>
@@ -47,12 +45,6 @@ const Styled = {
     .subTitle {
       font-size: 1.8rem;
       line-height: 2.2rem;
-      & > span {
-        font-weight: 400;
-        font-size: 1.8rem;
-        line-height: 2.2rem;
-        margin-left: 0.6rem;
-      }
     }
     .title {
       font-weight: 600;
@@ -72,7 +64,7 @@ const Styled = {
     gap: 2.5rem;
     margin-top: 2rem;
   `,
-  Content: styled.div<{isOpen:boolean}>`
+  Content: styled.div<{ isOpen: boolean }>`
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
@@ -87,7 +79,7 @@ const Styled = {
       line-height: 1.9rem;
     }
     .recipe {
-      height: ${({isOpen})=>isOpen ? '50vh':'17rem'};
+      height: ${({ isOpen }) => (isOpen ? '50vh' : '17rem')};
       overflow: scroll;
       transition: all 1s;
     }

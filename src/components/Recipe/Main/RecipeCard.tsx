@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { theme } from 'src/styles/theme';
 import styled from 'styled-components';
 
@@ -10,15 +11,17 @@ interface RecipeCardProps {
 function RecipeCard(props: RecipeCardProps) {
   const { cardInfo } = props;
   return (
-    <Styled.Root>
-      <Styled.ImageWrapper>
-        <img src={cardInfo.imageURL} />
-      </Styled.ImageWrapper>
-      <Styled.ContentWrapper>
-        <h3>{cardInfo.title}</h3>
-        <p>{cardInfo.writerInfo}</p>
-      </Styled.ContentWrapper>
-    </Styled.Root>
+    <Link href={`/recipe/${cardInfo.id}`} passHref>
+      <Styled.Root>
+        <Styled.ImageWrapper>
+          <img src={cardInfo.imageURL} />
+        </Styled.ImageWrapper>
+        <Styled.ContentWrapper>
+          <h3>{cardInfo.title}</h3>
+          <p>{cardInfo.writerInfo}</p>
+        </Styled.ContentWrapper>
+      </Styled.Root>
+    </Link>
   );
 }
 
@@ -30,6 +33,7 @@ const Styled = {
     flex-direction: column;
     width: 100%;
     padding: 0 2rem;
+    cursor: pointer;
   `,
   ContentWrapper: styled.div`
     display: flex;

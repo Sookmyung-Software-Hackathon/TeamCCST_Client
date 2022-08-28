@@ -8,14 +8,17 @@ import styled from 'styled-components';
 
 import Button from '../common/Button';
 import Input from '../common/Input';
+import ProgressBar from '../common/ProgressBar';
 
 function LoginInputDiv() {
   const router = useRouter();
   const [loginInfo, setLoginInfo] = useState({ name: '', password: '' });
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignin = async () => {
     try {
+      setIsLoading(true);
       const { data } = await client.post('/auth/signin', { ...loginInfo });
       localStorage.setItem('ccst_accessToken', data.data.accessToken);
       localStorage.setItem('ccst_name', data.data.name);
@@ -24,6 +27,8 @@ function LoginInputDiv() {
     } catch (err) {
       setIsError(true);
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -79,6 +84,7 @@ function LoginInputDiv() {
           </Button>
         </Link>
       </Styled.ButtonWrapper>
+      {isLoading && <ProgressBar />}
     </Styled.Root>
   );
 }

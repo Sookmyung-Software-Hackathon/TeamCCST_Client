@@ -3,6 +3,7 @@ import WriteIC from 'public/ic_write.svg';
 import { useEffect, useState } from 'react';
 import Footer from 'src/components/common/Footer';
 import Header from 'src/components/common/Header';
+import ProgressBar from 'src/components/common/ProgressBar';
 import CardList from 'src/components/Recipe/Main/CardList';
 import { client } from 'src/cores/api';
 import { theme } from 'src/styles/theme';
@@ -11,13 +12,17 @@ import styled from 'styled-components';
 function RecipeMain() {
   const [isLogin, setIsLogin] = useState(false);
   const [recipeList, setRecipeList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getRecipeList = async () => {
     try {
+      setIsLoading(true);
       const { data } = await client.get('/recipe');
       setRecipeList(data.data);
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -44,6 +49,7 @@ function RecipeMain() {
         )}
       </Styled.Root>
       <Footer />
+      {isLoading && <ProgressBar />}
     </Styled.Wrapper>
   );
 }
