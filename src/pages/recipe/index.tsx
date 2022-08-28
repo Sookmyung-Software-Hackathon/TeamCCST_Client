@@ -27,10 +27,10 @@ function RecipeMain() {
   };
 
   useEffect(() => {
+    getRecipeList();
     const accessToken = localStorage.getItem('ccst_accessToken');
     const isAccess = accessToken?.length ? true : false;
     setIsLogin(isAccess);
-    getRecipeList();
   }, []);
 
   return (
