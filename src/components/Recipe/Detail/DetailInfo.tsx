@@ -56,7 +56,7 @@ function DetailInfo({ isOpen, recipe, recipeId }: DetailInfoProps) {
         </Styled.Content>
         <Styled.Content isOpen={isOpen}>
           <p>요리법 소개</p>
-          <div className="recipe">{recipe?.content}</div>
+          <div className="recipe" >{recipe?.content}</div>
         </Styled.Content>
       </Styled.Main>
     </Styled.Root>
@@ -108,6 +108,7 @@ const Styled = {
       font-weight: 400;
       font-size: 1.6rem;
       line-height: 1.9rem;
+      white-space: pre-line;
     }
     .recipe {
       height: ${({ isOpen }) => (isOpen ? '50vh' : '17rem')};
