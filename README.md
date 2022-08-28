@@ -25,7 +25,7 @@
 
 ### 사용 라이브러리
 ```json
-    "dependencies": {
+  "dependencies": {
     "@types/styled-components": "^5.1.26",
     "axios": "^0.27.2",
     "babel-plugin-inline-react-svg": "^2.0.1",
