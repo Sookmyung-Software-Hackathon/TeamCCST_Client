@@ -11,7 +11,7 @@ function SelectNickname(props: SelectNicknameProps) {
   const { name, nickname, handleSelect } = props;
   return (
     <Styled.Root>
-      <h1>오미자님을 어떻게 불러드릴까요?</h1>
+      <h1>{name}님을 어떻게 불러드릴까요?</h1>
       <Styled.SelectList>
         {nicknameList.map((el) => (
           <Styled.Item
