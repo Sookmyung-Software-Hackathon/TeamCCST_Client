@@ -1,3 +1,6 @@
+import LikeIC from 'public/ic_like.svg';
+import LikedIC from 'public/ic_liked.svg';
+import { useEffect, useState } from 'react';
 import { recipeProps } from 'src/pages/recipe/[id]';
 import { theme } from 'src/styles/theme';
 import styled from 'styled-components';
@@ -5,18 +8,47 @@ import styled from 'styled-components';
 interface DetailInfoProps {
   isOpen: boolean;
   recipe: recipeProps | undefined;
+  recipeId: string | string[] | undefined;
 }
 
-function DetailInfo({ isOpen, recipe }: DetailInfoProps) {
+function DetailInfo({ isOpen, recipe, recipeId }: DetailInfoProps) {
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeList, setLikeList] = useState<string[]>([]);
+
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+    if (!isLiked && typeof recipeId === 'string') {
+      localStorage.setItem('ccst_liked', JSON.stringify([...likeList, recipeId]));
+      setLikeList([...likeList, recipeId]);
+    } else if (isLiked && typeof recipeId === 'string') {
+      localStorage.setItem('ccst_liked', JSON.stringify(likeList.filter((el) => el !== recipeId)));
+      setLikeList(likeList.filter((el) => el !== recipeId));
+    }
+  };
+
+  useEffect(() => {
+    const list = JSON.parse(localStorage.getItem('ccst_liked') || '');
+    setLikeList(list);
+  }, []);
+
+  useEffect(() => {
+    if (typeof recipeId === 'string' && likeList.includes(recipeId)) {
+      setIsLiked(true);
+    }
+  }, [likeList, recipeId]);
+
   return (
     <Styled.Root>
-      <Styled.Header>
-        <p className="subTitle">{recipe?.writer}</p>
-        <p className="title">
-          <span>{recipe?.food}</span>
-          요리법을 소개할게요
-        </p>
-      </Styled.Header>
+      <Styled.Wrapper>
+        <Styled.Header>
+          <p className="subTitle">{recipe?.writer}</p>
+          <p className="title">
+            <span>{recipe?.food}</span>
+            요리법을 소개할게요
+          </p>
+        </Styled.Header>
+        {isLiked ? <LikedIC onClick={handleLike} /> : <LikeIC onClick={handleLike} />}
+      </Styled.Wrapper>
       <Styled.Main>
         <Styled.Content isOpen={isOpen}>
           <p>재료 소개</p>
@@ -40,8 +72,7 @@ const Styled = {
   `,
   Header: styled.div`
     gap: 5rem;
-    padding: 0 1rem 2.1rem 1rem;
-    border-bottom: 1px solid ${theme.colors.footerGrey};
+
     .subTitle {
       font-size: 1.8rem;
       line-height: 2.2rem;
@@ -83,5 +114,12 @@ const Styled = {
       overflow: scroll;
       transition: all 1s;
     }
+  `,
+  Wrapper: styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem 2.1rem 1rem;
+    border-bottom: 1px solid ${theme.colors.footerGrey};
   `,
 };

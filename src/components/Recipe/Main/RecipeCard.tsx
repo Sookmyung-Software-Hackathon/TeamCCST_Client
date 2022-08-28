@@ -1,4 +1,7 @@
 import Link from 'next/link';
+import LikeIC from 'public/ic_like.svg';
+import LikedIC from 'public/ic_liked.svg';
+import { useEffect, useState } from 'react';
 import { theme } from 'src/styles/theme';
 import styled from 'styled-components';
 
@@ -10,16 +13,26 @@ interface RecipeCardProps {
 
 function RecipeCard(props: RecipeCardProps) {
   const { cardInfo } = props;
+  const [likeList, setLikeList] = useState<string[]>([]);
+
+  useEffect(() => {
+    const list = JSON.parse(localStorage.getItem('ccst_liked') || '');
+    setLikeList(list);
+  }, []);
+
   return (
     <Link href={`/recipe/${cardInfo.id}`} passHref>
       <Styled.Root>
         <Styled.ImageWrapper>
           <img src={cardInfo.imageURL} />
         </Styled.ImageWrapper>
-        <Styled.ContentWrapper>
-          <h3>{cardInfo.title}</h3>
-          <p>{cardInfo.writerInfo}</p>
-        </Styled.ContentWrapper>
+        <Styled.Wrapper>
+          <Styled.ContentWrapper>
+            <h3>{cardInfo.title}</h3>
+            <p>{cardInfo.writerInfo}</p>
+          </Styled.ContentWrapper>
+          {likeList.includes(`${cardInfo.id}`) ? <LikedIC /> : <LikeIC />}
+        </Styled.Wrapper>
       </Styled.Root>
     </Link>
   );
@@ -63,5 +76,11 @@ const Styled = {
       width: 100%;
       border-radius: 10px;
     }
+  `,
+  Wrapper: styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 1rem;
   `,
 };

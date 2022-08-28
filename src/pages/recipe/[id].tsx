@@ -50,7 +50,7 @@ function RecipeDetail() {
           <Styled.IconWrapper>
             {isOpen ? <Styled.DownIcon onClick={toggle} /> : <Styled.UpIcon onClick={toggle} />}
           </Styled.IconWrapper>
-          <DetailInfo isOpen={isOpen} recipe={recipe} />
+          <DetailInfo isOpen={isOpen} recipe={recipe} recipeId={router.query.id} />
         </>
       </UnderBox>
       {isLoading && <ProgressBar />}
