@@ -9,7 +9,9 @@ function InDesktop() {
     <Styled.Root>
       <Logo />
       <h3>휴대폰으로 접속해 주세요!</h3>
-      <Image src={QR} alt={'QR코드'} width={300} height={300} />
+      <Styled.ImageWrapper>
+        <Image src={QR} alt={'QR코드'} width={200} height={200} />
+      </Styled.ImageWrapper>
     </Styled.Root>
   );
 }
@@ -34,5 +36,9 @@ const Styled = {
       font-size: 4rem;
       color: white;
     }
+  `,
+  ImageWrapper: styled.div`
+    border-radius: 30px;
+    overflow: hidden;
   `,
 };
