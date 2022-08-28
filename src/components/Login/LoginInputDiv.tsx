@@ -1,5 +1,7 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
+import { client } from 'src/cores/api';
 import { theme } from 'src/styles/theme';
 import { InputProps } from 'src/types/inputType';
 import styled from 'styled-components';
@@ -8,15 +10,30 @@ import Button from '../common/Button';
 import Input from '../common/Input';
 
 function LoginInputDiv() {
-  const [loginInfo, setLoginInfo] = useState({ name: '', password: '' });
   const router = useRouter();
+  const [loginInfo, setLoginInfo] = useState({ name: '', password: '' });
+  const [isError, setIsError] = useState(false);
+
+  const handleSignin = async () => {
+    try{
+      const {data} = await client.post('/auth/signin',{...loginInfo});
+      localStorage.setItem('ccst_accessToken',data.data.accessToken);
+      localStorage.setItem('ccst_name',data.data.name);
+      setIsError(false);
+      router.push('/recipe');
+    }
+    catch(err){
+      setIsError(true);
+      console.log(err);
+    }
+  }
+
   const handleClick = () => {
     //서버 제출
+    handleSignin();
     console.log(loginInfo);
   };
-  const handleRouter = () => {
-    router.push('/auth/join');
-  };
+
   const handleChange = (type: string, value: string) => {
     setLoginInfo((prev) => ({ ...prev, [type]: value }));
     console.log(loginInfo);
@@ -55,13 +72,16 @@ function LoginInputDiv() {
           <Input key={key} inputMeta={inputMeta} value={value} onChange={onChange} />
         ))}
       </Styled.InputWrapper>
+      {isError && <Styled.Error>이름 또는 비밀번호가 잘못되었습니다.</Styled.Error>}
       <Styled.ButtonWrapper>
         <Button color={theme.colors.main_color} type="button" onClick={handleClick}>
           요리법 작성하러 가볼까요?
         </Button>
-        <Button color={theme.colors.black} type="button" onClick={handleRouter}>
-          아직 계정이 없다면 회원가입 하기
-        </Button>
+        <Link href="/auth/join" passHref>
+          <Button color={theme.colors.black} type="button">
+            아직 계정이 없다면 회원가입 하기
+          </Button>
+        </Link>
       </Styled.ButtonWrapper>
     </Styled.Root>
   );
@@ -96,4 +116,11 @@ const Styled = {
     width: 100%;
     gap: 1.3rem;
   `,
+  Error: styled.p`
+    font-weight: 400;
+    font-size: 1.2rem;
+    line-height: 2.4rem;
+    margin-top: -2.4rem;
+    color:${theme.colors.main_color}
+  `
 };

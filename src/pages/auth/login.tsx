@@ -10,7 +10,7 @@ function Login() {
       <Styled.ImgWrapper>
         <Image src={'/logo.svg'} alt={'로고'} width={170} height={120} />
       </Styled.ImgWrapper>
-      <UnderBox padding={'3rem 1.8rem'}>
+      <UnderBox padding={'3rem 2rem'}>
         <LoginInputDiv />
       </UnderBox>
     </Styled.Root>

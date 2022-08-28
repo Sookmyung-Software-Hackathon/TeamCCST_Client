@@ -4,7 +4,7 @@ export const theme = {
     black: '#000000',
     white: '#FFFFFF',
     grey: '#A9A9A9',
-    inputGrey: '##989898',
+    inputGrey: '#989898',
     footerGrey: '#EFEFEF',
   },
 };

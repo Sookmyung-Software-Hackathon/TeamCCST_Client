@@ -1,21 +1,36 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Button from 'src/components/common/Button';
 import UnderBox from 'src/components/common/UnderBox';
 import JoinInputDiv from 'src/components/Join/JoinInputDiv';
 import SelectNickname from 'src/components/Join/SelectNickname';
+import { client } from 'src/cores/api';
 import { theme } from 'src/styles/theme';
 import styled from 'styled-components';
 
 function Join() {
   const [isFirst, setIsFirst] = useState(true);
   const [joinInfo, setJoinInfo] = useState({ name: '', password: '', year: '', nickname: '님' });
+  const router = useRouter();
+
+  const handleSignup = async () => {
+    try{
+      const {data} = await client.post('/auth/signup',{...joinInfo, year: parseInt(joinInfo.year)});
+      localStorage.setItem('ccst_accessToken',data.data.accessToken);
+      localStorage.setItem('ccst_name',data.data.name);
+      router.push('/recipe');
+    }
+    catch(err){
+      throw Error('error!');
+    }
+  }
+
   const handleClick = (isFirst: boolean) => {
     if (isFirst) {
       setIsFirst(!isFirst);
     } else {
-      //서버 제출
-      console.log(joinInfo);
+      handleSignup();
     }
   };
   const handleChange = (type: string, value: string) => {
@@ -27,7 +42,7 @@ function Join() {
       <Styled.ImgWrapper>
         <Image src={'/logo.svg'} alt={'로고'} width={170} height={120} />
       </Styled.ImgWrapper>
-      <UnderBox padding={'3rem 1.8rem'}>
+      <UnderBox padding={'3rem 2rem'}>
         <>
           {isFirst ? (
             <JoinInputDiv joinInfo={joinInfo} handleChange={handleChange} />
