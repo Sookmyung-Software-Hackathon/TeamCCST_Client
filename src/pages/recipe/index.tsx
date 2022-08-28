@@ -1,4 +1,5 @@
 import WriteIC from 'public/ic_write.svg';
+import { useEffect, useState } from 'react';
 import Footer from 'src/components/common/Footer';
 import Header from 'src/components/common/Header';
 import CardList from 'src/components/Recipe/Main/CardList';
@@ -6,16 +7,28 @@ import { theme } from 'src/styles/theme';
 import styled from 'styled-components';
 
 function RecipeMain() {
+  const [isLogin,setIsLogin] = useState(false);
+
+  useEffect(()=>{
+  const accessToken = localStorage.getItem('ccst_accessToken');
+  const isAccess = accessToken?.length ? true:false;
+  setIsLogin(isAccess);
+  },[])
+
   return (
     <Styled.Wrapper>
       <Header />
       <Styled.Root>
         <h1>오늘은 어떤 청춘의 요리를 해볼까요?</h1>
         <CardList />
-        <Styled.Button>
-          <WriteIC />
-          작성하기
-        </Styled.Button>
+        {
+          isLogin && 
+          <Styled.Button>
+            <WriteIC />
+            작성하기
+          </Styled.Button>
+        }
+        
       </Styled.Root>
       <Footer />
     </Styled.Wrapper>
