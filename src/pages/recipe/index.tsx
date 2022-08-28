@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Footer from 'src/components/common/Footer';
 import Header from 'src/components/common/Header';
 import ProgressBar from 'src/components/common/ProgressBar';
+import Skeleton from 'src/components/common/Skeleton';
 import CardList from 'src/components/Recipe/Main/CardList';
 import { client } from 'src/cores/api';
 import { theme } from 'src/styles/theme';
@@ -38,7 +39,7 @@ function RecipeMain() {
       <Header />
       <Styled.Root>
         <h1>오늘은 어떤 청춘의 요리를 해볼까요?</h1>
-        <CardList recipeList={recipeList} />
+        {isLoading ? <Skeleton /> : <CardList recipeList={recipeList} />}
         {isLogin && (
           <Link href={'/write'} passHref>
             <Styled.Button>
