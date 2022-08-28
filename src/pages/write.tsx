@@ -134,22 +134,21 @@ function Write() {
             <br />
             아래 +를 눌러 추가해주세요
           </Styled.Label>
-          {imagePreview ? (
+          {imagePreview && (
             <Styled.ImagePreview>
               <Image layout="fill" src={imagePreview} alt="image-preview" />
             </Styled.ImagePreview>
-          ) : (
-            <>
-              <input
-                onChange={handleFileChange}
-                id="image-upload"
-                type="file"
-                multiple
-                accept="image/*"
-              />
-              <Styled.ImageUploadButton htmlFor="image-upload" />
-            </>
           )}
+          <>
+            <input
+              onChange={handleFileChange}
+              id="image-upload"
+              type="file"
+              multiple
+              accept="image/*"
+            />
+            <Styled.ImageUploadButton htmlFor="image-upload" />
+          </>
         </Styled.InputWrapper>
         <Button color={theme.colors.main_color} type="submit">
           요리 소개하기
@@ -202,9 +201,9 @@ const Styled = {
     }
   `,
   ImagePreview: styled.div`
-    width: 10rem;
-    height: 10rem;
-    border-radius: 18px;
+    width: 100%;
+    height: 23rem;
+    border-radius: 8px;
     border: 1px solid #fd892b;
 
     padding: 0.1rem;
