@@ -85,6 +85,7 @@ const Styled = {
     display: flex;
     justify-content: center;
     margin: 1.3rem 0;
+    cursor: pointer;
   `,
   UpIcon: styled(DropUpIC)`
     animation: ArrowUp 0.3s forwards;
