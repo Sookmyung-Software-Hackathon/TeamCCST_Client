@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={{ ...theme, clientWidth, availableWidth }}>
       <GlobalStyles />
       <Head>
-        <title>Drag Me</title>
+        <title>청춘식탁</title>
       </Head>
       <Layout>
         <Component {...pageProps} />

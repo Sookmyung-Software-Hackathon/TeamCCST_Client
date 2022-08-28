@@ -1,11 +1,10 @@
+import DropUpIC from 'public/ic_arrow_up.svg';
+import { useState } from 'react';
 import UnderBox from 'src/components/common/UnderBox';
 import DetailInfo from 'src/components/Recipe/Detail/DetailInfo';
 import { DummyDetail } from 'src/constants/dummy';
-import styled from 'styled-components';
-import DropUpIC from 'public/ic_arrow_up.svg';
-import DropDownIC from 'public/ic_arrow_down.svg';
-import { useState } from 'react';
 import { ArrowDownAnimation, ArrowUpAnimation } from 'src/styles/animation';
+import styled from 'styled-components';
 
 function RecipeDetail() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,10 +15,10 @@ function RecipeDetail() {
       <Styled.ImgWrapper url={DummyDetail.image} />
       <UnderBox padding={'0 2rem 3rem 2rem'}>
         <>
-        <Styled.IconWrapper>
-          {isOpen?<Styled.DownIcon onClick={toggle}/>:<Styled.UpIcon onClick={toggle}/>}
-        </Styled.IconWrapper>
-          <DetailInfo isOpen={isOpen}/>
+          <Styled.IconWrapper>
+            {isOpen ? <Styled.DownIcon onClick={toggle} /> : <Styled.UpIcon onClick={toggle} />}
+          </Styled.IconWrapper>
+          <DetailInfo isOpen={isOpen} />
         </>
       </UnderBox>
     </Styled.Root>
@@ -59,5 +58,5 @@ const Styled = {
   `,
   DownIcon: styled(DropUpIC)`
     animation: ArrowDown 0.3s forwards;
-  `
+  `,
 };

@@ -1,34 +1,47 @@
+import Link from 'next/link';
 import WriteIC from 'public/ic_write.svg';
 import { useEffect, useState } from 'react';
 import Footer from 'src/components/common/Footer';
 import Header from 'src/components/common/Header';
 import CardList from 'src/components/Recipe/Main/CardList';
+import { client } from 'src/cores/api';
 import { theme } from 'src/styles/theme';
 import styled from 'styled-components';
 
 function RecipeMain() {
-  const [isLogin,setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+  const [recipeList, setRecipeList] = useState([]);
 
-  useEffect(()=>{
-  const accessToken = localStorage.getItem('ccst_accessToken');
-  const isAccess = accessToken?.length ? true:false;
-  setIsLogin(isAccess);
-  },[])
+  const getRecipeList = async () => {
+    try {
+      const { data } = await client.get('/recipe');
+      setRecipeList(data.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('ccst_accessToken');
+    const isAccess = accessToken?.length ? true : false;
+    setIsLogin(isAccess);
+    getRecipeList();
+  }, []);
 
   return (
     <Styled.Wrapper>
       <Header />
       <Styled.Root>
         <h1>오늘은 어떤 청춘의 요리를 해볼까요?</h1>
-        <CardList />
-        {
-          isLogin && 
-          <Styled.Button>
-            <WriteIC />
-            작성하기
-          </Styled.Button>
-        }
-        
+        <CardList recipeList={recipeList} />
+        {isLogin && (
+          <Link href={'/write'} passHref>
+            <Styled.Button>
+              <WriteIC />
+              작성하기
+            </Styled.Button>
+          </Link>
+        )}
       </Styled.Root>
       <Footer />
     </Styled.Wrapper>

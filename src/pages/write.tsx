@@ -1,27 +1,30 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import TitleLogo from 'public/titleLogo.svg';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import Button from 'src/components/common/Button';
 import Input from 'src/components/common/Input';
+import { client } from 'src/cores/api';
 import { theme } from 'src/styles/theme';
 import { InputProps } from 'src/types/inputType';
 import { encodeFileToBase64 } from 'src/utils/encode';
 import styled from 'styled-components';
 
 interface IFormInputs {
-  name: string;
-  ingredients: string;
-  recipe: string;
-  image: File | null;
+  food: string;
+  ingredient: string;
+  content: string;
+  file: File | null;
 }
 
 function Write() {
-  // 서버가 요구하는 formdata키 값이랑 이거 이름이랑 통일시켜야함.
+  const router = useRouter();
+  const [accessToken, setAccessToken] = useState<string | null>('');
   const [formInputs, setFormInputs] = useState<IFormInputs>({
-    name: '',
-    ingredients: '',
-    recipe: '',
-    image: null,
+    food: '',
+    ingredient: '',
+    content: '',
+    file: null,
   });
 
   const [imagePreview, setImagePreview] = useState('');
@@ -36,7 +39,7 @@ function Write() {
     }));
   };
 
-  const { name, ingredients, recipe } = formInputs;
+  const { food, ingredient, content } = formInputs;
 
   const inputDataList: Array<InputProps & { key: number }> = [
     {
@@ -46,9 +49,9 @@ function Write() {
         type: 'text',
         placeholder: '예시) 오미자청',
       },
-      value: name,
+      value: food,
       onChange: ({ target: { value } }: ChangeEvent<HTMLInputElement>) =>
-        handleChange('name', value),
+        handleChange('food', value),
     },
     {
       key: 2,
@@ -57,49 +60,56 @@ function Write() {
         type: 'text',
         placeholder: '예시) 오미자, 설탕, 큰 병',
       },
-      value: ingredients,
+      value: ingredient,
       onChange: ({ target: { value } }: ChangeEvent<HTMLInputElement>) =>
-        handleChange('ingredients', value),
+        handleChange('ingredient', value),
     },
     {
       key: 3,
       inputMeta: {
         label: '요리법을 입력해주세요',
         type: 'textarea',
-        placeholder: `예시)
-
-오미자를 깨끗하게 씻어요
-준비한 병에 오미자와 설탕을 차례로 넣어요.
-일주일만 기다리면 맛있는 오미자청이 완성되어요.
-
-사이다에 타먹어도 맛있어요`,
+        placeholder:
+          '예시)\n\n오미자를 깨끗하게 씻어요\n준비한 병에 오미자와 설탕을 차례로 넣어요.\n일주일만 기다리면 맛있는 오미자청이 완성되어요.\n사이다에 타먹어도 맛있어요',
       },
-      value: recipe,
+      value: content,
       onChange: ({ target: { value } }: ChangeEvent<HTMLTextAreaElement>) =>
-        handleChange('recipe', value),
+        handleChange('content', value),
     },
   ];
 
-  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const image = e?.target?.files && e.target.files[0];
-    if (!image) return;
+  useEffect(() => {
+    const accessToken = localStorage.getItem('ccst_accessToken');
+    setAccessToken(accessToken);
+  }, []);
 
-    const url = await encodeFileToBase64(image);
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e?.target?.files && e.target.files[0];
+    if (!file) return;
+
+    const url = await encodeFileToBase64(file);
 
     setImagePreview(url);
-    setFormInputs((prevInput) => ({ ...prevInput, image }));
+    setFormInputs((prevInput) => ({ ...prevInput, file }));
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     const formData = new FormData();
     Object.entries(formInputs).forEach(([key, val]) => {
       formData.append(key, val);
     });
-    console.log(formInputs);
-    // submit to post;
-    // content-type: 'multipart/form-data'
+
+    if (accessToken !== null) {
+      await client.post('/recipe', formData, {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+          'content-type': 'multipart/form-data',
+        },
+      });
+      router.push('/recipe');
+    }
   };
 
   return (

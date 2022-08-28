@@ -1,14 +1,10 @@
 import { theme } from 'src/styles/theme';
 import styled from 'styled-components';
 
-interface CardInfoType {
-  title: string;
-  content: string;
-  image: string;
-}
+import { recipeListEl } from './CardList';
 
 interface RecipeCardProps {
-  cardInfo: CardInfoType;
+  cardInfo: recipeListEl;
 }
 
 function RecipeCard(props: RecipeCardProps) {
@@ -16,11 +12,11 @@ function RecipeCard(props: RecipeCardProps) {
   return (
     <Styled.Root>
       <Styled.ImageWrapper>
-        <img src={cardInfo.image} />
+        <img src={cardInfo.imageURL} />
       </Styled.ImageWrapper>
       <Styled.ContentWrapper>
         <h3>{cardInfo.title}</h3>
-        <p>{cardInfo.content}</p>
+        <p>{cardInfo.writerInfo}</p>
       </Styled.ContentWrapper>
     </Styled.Root>
   );

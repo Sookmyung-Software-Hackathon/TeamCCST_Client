@@ -15,28 +15,24 @@ function LoginInputDiv() {
   const [isError, setIsError] = useState(false);
 
   const handleSignin = async () => {
-    try{
-      const {data} = await client.post('/auth/signin',{...loginInfo});
-      localStorage.setItem('ccst_accessToken',data.data.accessToken);
-      localStorage.setItem('ccst_name',data.data.name);
+    try {
+      const { data } = await client.post('/auth/signin', { ...loginInfo });
+      localStorage.setItem('ccst_accessToken', data.data.accessToken);
+      localStorage.setItem('ccst_name', data.data.name);
       setIsError(false);
       router.push('/recipe');
-    }
-    catch(err){
+    } catch (err) {
       setIsError(true);
       console.log(err);
     }
-  }
+  };
 
   const handleClick = () => {
-    //서버 제출
     handleSignin();
-    console.log(loginInfo);
   };
 
   const handleChange = (type: string, value: string) => {
     setLoginInfo((prev) => ({ ...prev, [type]: value }));
-    console.log(loginInfo);
   };
 
   const inputDataList: Array<InputProps & { key: number }> = [
@@ -121,6 +117,6 @@ const Styled = {
     font-size: 1.2rem;
     line-height: 2.4rem;
     margin-top: -2.4rem;
-    color:${theme.colors.main_color}
-  `
+    color: ${theme.colors.main_color};
+  `,
 };

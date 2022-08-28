@@ -15,16 +15,18 @@ function Join() {
   const router = useRouter();
 
   const handleSignup = async () => {
-    try{
-      const {data} = await client.post('/auth/signup',{...joinInfo, year: parseInt(joinInfo.year)});
-      localStorage.setItem('ccst_accessToken',data.data.accessToken);
-      localStorage.setItem('ccst_name',data.data.name);
+    try {
+      const { data } = await client.post('/auth/signup', {
+        ...joinInfo,
+        year: parseInt(joinInfo.year),
+      });
+      localStorage.setItem('ccst_accessToken', data.data.accessToken);
+      localStorage.setItem('ccst_name', data.data.name);
       router.push('/recipe');
-    }
-    catch(err){
+    } catch (err) {
       throw Error('error!');
     }
-  }
+  };
 
   const handleClick = (isFirst: boolean) => {
     if (isFirst) {
@@ -35,7 +37,6 @@ function Join() {
   };
   const handleChange = (type: string, value: string) => {
     setJoinInfo((prev) => ({ ...prev, [type]: value }));
-    console.log(joinInfo);
   };
   return (
     <Styled.Root>

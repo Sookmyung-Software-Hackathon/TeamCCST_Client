@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Button from 'src/components/common/Button';
+import InDesktop from 'src/components/common/InDesktop';
 import UnderBox from 'src/components/common/UnderBox';
 import useMedia from 'src/hooks/useMedia';
 import { theme } from 'src/styles/theme';
@@ -37,7 +38,7 @@ function Home() {
       </UnderBox>
     </Styled.Root>
   ) : (
-    <span>데스크톱메인</span>
+    <InDesktop />
   );
 }
 

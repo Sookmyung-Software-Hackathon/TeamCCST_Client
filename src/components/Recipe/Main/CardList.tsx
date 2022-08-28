@@ -1,12 +1,20 @@
-import { DummyList } from 'src/constants/dummy';
 import styled from 'styled-components';
 
 import RecipeCard from './RecipeCard';
 
-function CardList() {
+export interface recipeListEl {
+  imageURL: string;
+  title: string;
+  writerInfo: string;
+}
+interface recipeListProps {
+  recipeList: recipeListEl[];
+}
+
+function CardList({ recipeList }: recipeListProps) {
   return (
     <Styled.Root>
-      {DummyList.map((el) => (
+      {recipeList.map((el) => (
         <RecipeCard key={el.title} cardInfo={el} />
       ))}
     </Styled.Root>
