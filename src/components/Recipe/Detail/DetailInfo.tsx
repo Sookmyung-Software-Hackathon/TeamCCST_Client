@@ -27,7 +27,7 @@ function DetailInfo({ isOpen, recipe, recipeId }: DetailInfoProps) {
   };
 
   useEffect(() => {
-    const list = JSON.parse(localStorage.getItem('ccst_liked') || '');
+    const list = JSON.parse(localStorage.getItem('ccst_liked') || '[]');
     setLikeList(list);
   }, []);
 

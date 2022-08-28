@@ -16,7 +16,7 @@ function RecipeCard(props: RecipeCardProps) {
   const [likeList, setLikeList] = useState<string[]>([]);
 
   useEffect(() => {
-    const list = JSON.parse(localStorage.getItem('ccst_liked') || '');
+    const list = JSON.parse(localStorage.getItem('ccst_liked') || '[]');
     setLikeList(list);
   }, []);
 
