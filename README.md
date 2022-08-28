@@ -118,6 +118,3 @@
     └── encode.ts
 
 ```
-
-### Coding Convention
-[Typescript Style Guide](https://basarat.gitbook.io/typescript/styleguide)
