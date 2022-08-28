@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import LikeIC from 'public/ic_like.svg';
 import LikedIC from 'public/ic_liked.svg';
@@ -24,7 +25,15 @@ function RecipeCard(props: RecipeCardProps) {
     <Link href={`/recipe/${cardInfo.id}`} passHref>
       <Styled.Root>
         <Styled.ImageWrapper>
-          <img src={cardInfo.imageURL} />
+          <Image
+            layout="fixed"
+            src={cardInfo.imageURL}
+            blurDataURL={cardInfo.imageURL}
+            alt="recipeImg"
+            placeholder="blur"
+            width={703}
+            height={200}
+          />
         </Styled.ImageWrapper>
         <Styled.Wrapper>
           <Styled.ContentWrapper>
@@ -70,8 +79,8 @@ const Styled = {
   `,
   ImageWrapper: styled.div`
     display: flex;
-    width: 100%;
-    height: 200px;
+    /* width: 100%;
+    height: 200px; */
     & > img {
       width: 100%;
       border-radius: 10px;
