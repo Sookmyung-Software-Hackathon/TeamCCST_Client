@@ -33,3 +33,23 @@ export const RotateAnimation = `
     }
   }
 `;
+
+export const UpDownAnimation = `
+  @keyframes upNdown {
+      0% {
+        transform: translate(-50%,20%);
+      }
+      25% {
+        transform: translate(-50%,-20%);
+      }
+      50% {
+        transform: translate(-50%,20%);
+      }
+      75% {
+        transform: translate(-50%,-20%);
+      }
+      100% {
+        transform: translate(-50%,20%);
+      }
+    }
+`;

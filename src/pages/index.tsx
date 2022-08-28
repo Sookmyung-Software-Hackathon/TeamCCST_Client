@@ -5,6 +5,7 @@ import Button from 'src/components/common/Button';
 import InDesktop from 'src/components/common/InDesktop';
 import UnderBox from 'src/components/common/UnderBox';
 import useMedia from 'src/hooks/useMedia';
+import { UpDownAnimation } from 'src/styles/animation';
 import { theme } from 'src/styles/theme';
 import styled from 'styled-components';
 
@@ -80,7 +81,8 @@ const Styled = {
     top: -3rem;
     box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.07);
     left: 50%;
-    transform: translateX(-50%);
+    ${UpDownAnimation}
+    animation: upNdown 3s linear infinite;
 
     &::after {
       border-top: 1rem solid white;

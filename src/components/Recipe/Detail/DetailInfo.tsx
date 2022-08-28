@@ -55,7 +55,7 @@ function DetailInfo({ isOpen, recipe, recipeId }: DetailInfoProps) {
           <div>{recipe?.ingredient}</div>
         </Styled.Content>
         <Styled.Content isOpen={isOpen}>
-          <p>레시피 소개</p>
+          <p>요리법 소개</p>
           <div className="recipe">{recipe?.content}</div>
         </Styled.Content>
       </Styled.Main>
